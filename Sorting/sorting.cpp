@@ -2,12 +2,22 @@
 #define uint unsigned int
 
 template <typename T>
-void bubbleSort(T arr[], uint size) {
+bool asc(const T& lhs, const T& rhs) {
+    return lhs < rhs;
+}
+
+template <typename T>
+bool desc(const T &lhs, const T &rhs) {
+    return lhs > rhs;
+}
+
+template <typename T>
+void bubbleSort(T arr[], const uint size, bool comp(const T&, const T&) = asc) {
     bool isSorted = false;
     for (uint iter = 1; iter < size && !isSorted; ++iter) {
         isSorted = true;
         for (uint i = 0; i < size - iter; ++i) {
-            if (arr[i] > arr[i+1]) {
+            if (!comp(arr[i], arr[i+1])) {
                 std::swap(arr[i], arr[i+1]);
                 isSorted = false;
             }
