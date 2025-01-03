@@ -70,3 +70,26 @@ void cocktailSort(T arr[], uint size) {
         ++start;
     }
 }
+
+template <typename T>
+void quickSort(T arr[], uint left, uint right) { // Hoare Sorting
+    if (left >= right) return;
+    uint i = left;
+    uint j = right;
+    T midValue = arr[(left + right) / 2];
+    do {
+        while(arr[i] < midValue) i++;
+        while(arr[j] > midValue) j--;
+        if (i <= j) {
+            std::swap(arr[i], arr[j]);
+            i++, j--;
+        }
+    } while (i <= j);
+    if(j > left) quickSort(arr, left, j);
+    if (i < right) quickSort(arr, i, right);
+}
+
+template <typename T>
+void quickSort(T arr[], uint size) {
+    quickSort(arr, 0, size-1);
+}
