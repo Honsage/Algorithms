@@ -14,3 +14,17 @@ void bubbleSort(T arr[], int size) {
         }
     }
 }
+
+template <typename T>
+void selectionSort(T arr[], int size) {
+    uint idxOfMin;
+    for(uint i = 0; i < size-1; ++i) {
+        idxOfMin = i;
+        for(uint k = i + 1; k < size; ++k) {
+            if(arr[k] < arr[idxOfMin]) {
+                idxOfMin = k;
+            }
+        }
+        std::swap(arr[i], arr[idxOfMin]);
+    }
+}
