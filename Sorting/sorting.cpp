@@ -12,6 +12,16 @@ bool desc(const T &lhs, const T &rhs) {
 }
 
 template <typename T>
+bool abs_asc(const T& lhs, const T& rhs) {
+    return abs(lhs) < abs(rhs);
+}
+
+template <typename T>
+bool abs_desc(const T &lhs, const T &rhs) {
+    return abs(lhs) > abs(rhs);
+}
+
+template <typename T>
 void bubbleSort(T arr[], const uint size, bool comp(const T&, const T&) = asc) {
     bool isSorted = false;
     for (uint iter = 1; iter < size && !isSorted; ++iter) {
