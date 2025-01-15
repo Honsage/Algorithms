@@ -1,5 +1,5 @@
 #include <iostream>
-#define uint unsigned int
+#include "sorting.h"
 
 template <typename T>
 bool asc(const T& lhs, const T& rhs) {
