@@ -1,7 +1,7 @@
 # Algorithms and Data Structures
 
 
-# Brief description
+## Brief description
 This repository contains solutions of common data processing algorithms and data structures.
 
 ## Detailed description
