@@ -2,17 +2,21 @@
 #define HASHTABLE_H
 
 template <typename K, typename V>
-class HashTable {
-private:
-    struct Entry {
-        K key;
-        V value;
-        Entry(K key, V value) : key(key), value(value) {}
-    };
-    unsigned int size;
-    Entry* data;
+class HashMap {
+protected:
+    HashMap();
 public:
-    explicit HashTable(unsigned int size = 10);
+    static HashMap create();
+};
+
+template <typename K, typename V>
+class OpenHashTable : HashMap<K, V> { // Open addressing
+
+};
+
+template <typename K, typename V>
+class ChainHashTable { // Separate chaining / closed addressing
+
 };
 
 #include "HashTable.tpp"
