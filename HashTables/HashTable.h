@@ -1,20 +1,21 @@
 #ifndef HASHTABLE_H
 #define HASHTABLE_H
 
+
+enum class HashMapType {
+    OpenAddressing,
+    SeparateChaining
+};
+
 template <typename K, typename V>
 class HashTable { // api for hash table functionality / abstract class
 public:
-    enum class HashMapType {
-        OpenAddressing,
-        SeparateChaining
-    };
-
     static HashTable* create(HashMapType type = HashMapType::OpenAddressing, const unsigned int& capacity = 10); // fabric pattern
 
     virtual ~HashTable() = default;
 
-    unsigned int size();
-    bool empty();
+    unsigned int size() const;
+    bool empty() const;
 
     virtual V get(const K& key) const = 0;
     virtual bool contains(const K& key) const = 0;
@@ -29,7 +30,7 @@ protected:
 
     HashTable();
 
-    virtual void resize() = 0;
+    virtual void resize(unsigned int new_capacity) = 0;
 };
 
 
@@ -45,6 +46,8 @@ public:
     void remove(const K& key) override;
     void clear() override;
 private:
+    const unsigned int EXPAND_SIZE;
+
     struct Entry {
         K key;
         V value;
@@ -53,10 +56,14 @@ private:
             value(value) {}
     };
 
-    Entry* m_data;
+    Entry** m_data;
+    Entry* m_marked_entry;
 
-    void resize() override;
+    unsigned int hashOf(const K& key, int i = 0) const;
+
+    void resize(unsigned int new_capacity) override;
 };
+
 
 template <typename K, typename V>
 class ChainHashTable : HashTable<K, V> { // Separate chaining / closed addressing
@@ -82,8 +89,9 @@ private:
 
     Entry* m_data;
 
-    void resize() override;
+    void resize(unsigned int new_capacity) override;
 };
+
 
 #include "HashTable.tpp"
 
