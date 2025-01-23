@@ -1,7 +1,5 @@
 #ifndef HASHTABLE_TPP
 #define HASHTABLE_TPP
-#include <iostream>
-#include <stdlib.h>
 
 
 template<typename K, typename V>
@@ -60,35 +58,43 @@ V OpenHashTable<K, V>::get(const K &key) const {
         return this->m_marked_entry->value;
     }
     int t = 0;
-    unsigned int hash_code;
+    unsigned int hash_idx;
     do {
-        hash_code = this->hashOf(key, t);
+        hash_idx = this->hashOf(key, t);
         ++t;
-        // if(t == this->m_capacity) {
-        //     std::cerr << "Cannot find this key!\n";
-        //     return this->m_marked_entry->value;
-        // }
-    } while(this->m_data[hash_code]->key != key);
+    } while(this->m_data[hash_idx]->key != key);
 
-    return this->m_data[hash_code]->value;
+    return this->m_data[hash_idx]->value;
 }
 
 template<typename K, typename V>
 bool OpenHashTable<K, V>::contains(const K &key) const {
+    unsigned int hash_idx;
+    for (int t = 0; t < this->m_capacity; ++t) {
+        hash_idx = this->hashOf(key, t);
+        if (this->m_data[hash_idx] == nullptr) return false;
+        if (this->m_data[hash_idx] == this->m_marked_entry) continue;
+        if (this->m_data[hash_idx]->key == key) return true;
+    }
     return false;
 }
 
 template<typename K, typename V>
 void OpenHashTable<K, V>::set(const K &key, const V &value) {
-    int t = 0;
-    unsigned int hash_code;
-    do {
-        hash_code = this->hashOf(key, t);
-        ++t;
-    } while(this->m_data[hash_code] != nullptr);
+    if (! this->contains(key)) {
+        ++this->m_size;
+    }
 
-    this->m_data[hash_code] = new Entry(key, value);
-    ++this->m_size;
+    int t = 0;
+    unsigned int hash_idx;
+    do {
+        hash_idx = this->hashOf(key, t);
+        ++t;
+    } while(this->m_data[hash_idx] != nullptr &&
+            this->m_data[hash_idx] != this->m_marked_entry &&
+            this->m_data[hash_idx]->key != key);
+
+    this->m_data[hash_idx] = new Entry(key, value);
 
     if (this->m_size > 0.75 * this->m_capacity) {
         this->resize(this->m_capacity + this->EXPAND_SIZE);
@@ -97,10 +103,23 @@ void OpenHashTable<K, V>::set(const K &key, const V &value) {
 
 template<typename K, typename V>
 void OpenHashTable<K, V>::remove(const K &key) {
+    if (this->contains(key)) {
+        int t = 0;
+        unsigned int hash_idx;
+        do {
+            hash_idx = this->hashOf(key, t);
+            ++t;
+        } while(this->m_data[hash_idx]->key != key);
+        this->m_data[hash_idx] = this->m_marked_entry;
+    }
 }
 
 template<typename K, typename V>
 void OpenHashTable<K, V>::clear() {
+    for (int i = 0; i < this->m_capacity; ++i) {
+        this->m_data[i] = nullptr;
+    }
+    this->m_size = 0;
 }
 
 template<typename K, typename V>
@@ -113,6 +132,26 @@ unsigned int OpenHashTable<K, V>::hashOf(const K& key, const int i) const {
 
 template<typename K, typename V>
 void OpenHashTable<K, V>::resize(unsigned int new_capacity) {
+    auto** obsolete_data = this->m_data;
+    const unsigned int obsolete_capacity = this->m_capacity;
+
+    this->m_data = new Entry* [new_capacity];
+    this->m_capacity = new_capacity;
+    this->m_size = 0;
+    for (int i = 0; i < this->m_capacity; ++i) {
+        this->m_data[i] = nullptr;
+    }
+
+    for (int i = 0; i < obsolete_capacity; ++i) {
+        if (obsolete_data[i] != nullptr) {
+            this->set(obsolete_data[i]->key, obsolete_data[i]->value);
+        }
+    }
+
+    for (int i = 0; i < obsolete_capacity; ++i) {
+        delete obsolete_data[i];
+    }
+    delete[] obsolete_data;
 }
 
 

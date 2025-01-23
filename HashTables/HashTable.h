@@ -1,6 +1,7 @@
 #ifndef HASHTABLE_H
 #define HASHTABLE_H
 
+#include <iostream> // @TEMP
 
 enum class HashMapType {
     OpenAddressing,
@@ -35,7 +36,7 @@ protected:
 
 
 template <typename K, typename V>
-class OpenHashTable : HashTable<K, V> { // Open addressing
+class OpenHashTable final : public HashTable<K, V> { // Open addressing
 public:
     explicit OpenHashTable(unsigned int capacity = 10);
     ~OpenHashTable() override;
@@ -45,6 +46,24 @@ public:
     void set(const K& key, const V& value) override;
     void remove(const K& key) override;
     void clear() override;
+
+    // @TEMP
+    void print() {
+        for (int i = 0; i < this->m_capacity; ++i) {
+            auto now = this->m_data[i];
+            std::cout << i << " ";
+            if (now == nullptr) {
+                std::cout << "nullptr";
+            } else if (now == this->m_marked_entry) {
+                std::cout << "deleted (marked)";
+            } else {
+                std::cout << "key: " << now->key << " value: " << now->value;
+            }
+            std::cout << "\n";
+        }
+        std::cout << "\n";
+    }
+
 private:
     const unsigned int EXPAND_SIZE;
 
@@ -66,7 +85,7 @@ private:
 
 
 template <typename K, typename V>
-class ChainHashTable : HashTable<K, V> { // Separate chaining / closed addressing
+class ChainHashTable : public HashTable<K, V> { // Separate chaining / closed addressing
 public:
     explicit ChainHashTable(unsigned int capacity = 10);
     ~ChainHashTable() override;
