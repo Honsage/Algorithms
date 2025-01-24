@@ -19,7 +19,10 @@ Repository has several directories with solutions for certain algorithm classes.
    There are common algorithms, based on Graphs. Algorithms implemented:
     * Dijkstra method of finding shortest paths.
 * ### HashTables
-* ...
+    * Hash Table with open addressing
+    * Hash Table with separate chaining
+* ### Compression
+    * Huffman algorithm 
 
 ## Interaction with the solutions
 You can use these solutions in several ways:
