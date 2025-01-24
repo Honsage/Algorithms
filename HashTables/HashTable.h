@@ -26,8 +26,8 @@ public:
 
     // TODO: operator[]
 protected:
-    unsigned int m_capacity; // amount of cells available
-    unsigned int m_size; // real amount of entries
+    unsigned int m_capacity; // amount of cells allocated / logic size
+    unsigned int m_size; // amount of cells filled / user size
 
     HashTable();
 
