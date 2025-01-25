@@ -26,6 +26,8 @@ public:
 
     // TODO: operator[]
 protected:
+    const unsigned int EXPAND_SIZE;
+
     unsigned int m_capacity; // amount of cells allocated / logic size
     unsigned int m_size; // amount of cells filled / user size
 
@@ -65,8 +67,6 @@ public:
     }
 
 private:
-    const unsigned int EXPAND_SIZE;
-
     struct Entry {
         K key;
         V value;
@@ -106,7 +106,9 @@ private:
             next(next) {}
     };
 
-    Entry* m_data;
+    Entry** m_data;
+
+    unsigned int hashOf(const K& key) const;
 
     void resize(unsigned int new_capacity) override;
 };
