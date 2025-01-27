@@ -2,9 +2,14 @@
 
 #include "huffman.h"
 
-#include <iostream>
+HuffmanCompressor::HuffmanCompressor() {
+    this->reset();
+}
 
-HuffmanCompressor::HuffmanCompressor() {}
+HuffmanCompressor::~HuffmanCompressor() {
+    this->m_huffman_codes.clear();
+    delete this->m_root;
+}
 
 void HuffmanCompressor::encode(const std::string& text) {
     this->reset();
@@ -32,8 +37,8 @@ void HuffmanCompressor::encode(const std::string& text) {
         p_queue.push(new Node('\0', common_freq, left, right));
     }
 
-    this->root = p_queue.top();
-    this->recursive_encoding(this->root);
+    this->m_root = p_queue.top();
+    this->recursive_encoding(this->m_root);
     // huffman codes are computed
 
     for (char c : text) {
@@ -46,7 +51,7 @@ std::string HuffmanCompressor::decode() {
     const int encoded_size = static_cast<int>(this->m_compressed_text.size());
     std::string text;
     while (encoded_size != 0 && index < encoded_size) {
-        this->recursive_decoding(this->root, index, text);
+        this->recursive_decoding(this->m_root, index, text);
     }
     return text;
 }
@@ -62,7 +67,7 @@ std::string HuffmanCompressor::get_compressed_text() {
 void HuffmanCompressor::reset() {
     this->m_huffman_codes.clear();
     this->m_compressed_text = "";
-    this->root = nullptr;
+    this->m_root = nullptr;
 }
 
 void HuffmanCompressor::recursive_encoding(Node* root, std::string code) {

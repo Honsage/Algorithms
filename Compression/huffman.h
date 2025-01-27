@@ -7,6 +7,7 @@
 class HuffmanCompressor {
 public:
     HuffmanCompressor();
+    ~HuffmanCompressor();
 
     void encode(const std::string& text);
     std::string decode();
@@ -36,12 +37,11 @@ private:
     std::unordered_map<char, std::string> m_huffman_codes;
 
     std::string m_compressed_text;
-    Node* root;
+    Node* m_root;
 
     void recursive_encoding(Node* root, std::string code = "");
     void recursive_decoding(Node* root, int& index, std::string& text);
 };
-
 
 
 #endif //HUFFMAN_H
