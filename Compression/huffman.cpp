@@ -44,10 +44,11 @@ void HuffmanCompressor::encode(const std::string& text) {
 std::string HuffmanCompressor::decode() {
     int index = -1;
     const int encoded_size = static_cast<int>(this->m_compressed_text.size());
+    std::string text;
     while (encoded_size != 0 && index < encoded_size) {
-        this->recursive_decoding(this->root, index);
+        this->recursive_decoding(this->root, index, text);
     }
-    return "";
+    return text;
 }
 
 std::unordered_map<char, std::string> HuffmanCompressor::get_huffman_codes() {
@@ -75,18 +76,18 @@ void HuffmanCompressor::recursive_encoding(Node* root, std::string code) {
     this->recursive_encoding(root->right, code + "1");
 }
 
-void HuffmanCompressor::recursive_decoding(Node *root, int &index) {
+void HuffmanCompressor::recursive_decoding(Node *root, int &index, std::string& text) {
     if (root == nullptr) {
         return;
     }
     if (! root->left && ! root->right) {
-        std::cout << root->c;
+        text += root->c;
         return;
     }
     index++;
     if (this->m_compressed_text[index] == '0') {
-        this->recursive_decoding(root->left, index);
+        this->recursive_decoding(root->left, index, text);
     } else {
-        this->recursive_decoding(root->right, index);
+        this->recursive_decoding(root->right, index, text);
     }
 }

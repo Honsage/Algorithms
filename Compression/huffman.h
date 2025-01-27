@@ -39,7 +39,7 @@ private:
     Node* root;
 
     void recursive_encoding(Node* root, std::string code = "");
-    void recursive_decoding(Node* root, int& index);
+    void recursive_decoding(Node* root, int& index, std::string& text);
 };
 
 
