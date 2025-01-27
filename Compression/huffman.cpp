@@ -50,6 +50,14 @@ std::string HuffmanCompressor::decode() {
     return "";
 }
 
+std::unordered_map<char, std::string> HuffmanCompressor::get_huffman_codes() {
+    return this->m_huffman_codes;
+}
+
+std::string HuffmanCompressor::get_compressed_text() {
+    return this->m_compressed_text;
+}
+
 void HuffmanCompressor::reset() {
     this->m_huffman_codes.clear();
     this->m_compressed_text = "";

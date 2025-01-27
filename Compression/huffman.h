@@ -11,6 +11,11 @@ public:
     void encode(const std::string& text);
     std::string decode();
 
+    //@DEBUG
+    std::unordered_map<char, std::string> get_huffman_codes();
+    //@DEBUG
+    std::string get_compressed_text();
+
     void reset();
 private:
     struct Node {
