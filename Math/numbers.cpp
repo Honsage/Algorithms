@@ -57,3 +57,11 @@ std::tuple<int, int, int> extended_euclidean(const int &a, const int &b) {
     std::tie(x, y, g) = extended_euclidean(b, a % b);
     return {y, x - (a / b) * y, g};
 }
+
+int modpow(const int& a, const int& n, const int& m) {
+    if (n == 0) return 1 % m;
+    long long u = modpow(a, n / 2, m);
+    u = (u * u) % m;
+    if (n % 2 == 1) u = (u * a) % m;
+    return static_cast<int>(u);
+}

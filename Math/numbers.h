@@ -20,5 +20,6 @@ bool is_prime(int a);
 
 std::tuple<int, int, int> extended_euclidean(const int& a, const int& b);
 
+int modpow(const int& a, const int& n, const int& m);
 
 #endif //NUMBERS_H
