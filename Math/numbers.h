@@ -12,6 +12,8 @@ std::vector<bool> sieve_eratosthenes(int upper);
 
 std::set<int> primes(int upper);
 
+std::vector<int> factor(int a);
+
 bool is_prime(int a);
 
 

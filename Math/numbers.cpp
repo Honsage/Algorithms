@@ -10,11 +10,11 @@ int lcm(const int& a, const int& b) {
 }
 
 std::vector<bool> sieve_eratosthenes(int upper) {
-    std::vector<bool> sieve(upper, true);
+    std::vector<bool> sieve(upper + 1, true);
     sieve[0] = sieve[1] = false;
-    for (int i = 2; i < upper; ++i) {
+    for (int i = 2; i * i <= upper; ++i) {
         if (sieve[i]) {
-            for (int j = 2 * i; j < upper; j += i) {
+            for (int j = i * i; j <= upper; j += i) {
                 sieve[j] = false;
             }
         }
@@ -25,10 +25,22 @@ std::vector<bool> sieve_eratosthenes(int upper) {
 std::set<int> primes(int upper) {
     std::vector<bool> sieve = sieve_eratosthenes(upper);
     std::set<int> primes;
-    for (int i = 2; i < upper; ++i) {
+    for (int i = 2; i <= upper; ++i) {
         if (sieve[i]) primes.insert(i);
     }
     return primes;
+}
+
+std::vector<int> factor(int a) {
+    std::vector<int> divisors;
+    for (int d = 2; d * d <= a; ++d) {
+        while (a % d == 0) {
+            divisors.push_back(d);
+            a /= d;
+        }
+    }
+    if (a != 1) divisors.push_back(a);
+    return divisors;
 }
 
 bool is_prime(int a) {
