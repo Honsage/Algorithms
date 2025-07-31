@@ -1,5 +1,6 @@
 #include "numbers.h"
 
+
 int gcd(const int& a, const int& b)  {
     if (b == 0) return a;
     return gcd(b, a % b);
@@ -48,4 +49,11 @@ bool is_prime(int a) {
         if (a % i == 0) return false;
     }
     return true;
+}
+
+std::tuple<int, int, int> extended_euclidean(const int &a, const int &b) {
+    if (b == 0) return {1, 0, a};
+    int x, y, g;
+    std::tie(x, y, g) = extended_euclidean(b, a % b);
+    return {y, x - (a / b) * y, g};
 }

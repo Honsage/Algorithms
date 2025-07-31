@@ -3,6 +3,8 @@
 
 #include <set>
 #include <vector>
+#include <tuple>
+
 
 int gcd(const int& a, const int& b);
 
@@ -15,6 +17,8 @@ std::set<int> primes(int upper);
 std::vector<int> factor(int a);
 
 bool is_prime(int a);
+
+std::tuple<int, int, int> extended_euclidean(const int& a, const int& b);
 
 
 #endif //NUMBERS_H
